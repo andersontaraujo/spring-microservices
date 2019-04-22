@@ -1,7 +1,7 @@
-package com.devaware;
+package com.userservice;
 
-import com.devaware.user.User;
-import com.devaware.user.UserRepository;
+import com.userservice.user.User;
+import com.userservice.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

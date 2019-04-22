@@ -1,4 +1,4 @@
-package com.devaware.user;
+package com.userservice.user;
 
 import org.springframework.stereotype.Repository;
 

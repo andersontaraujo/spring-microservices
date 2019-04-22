@@ -1,8 +1,8 @@
-package com.devaware.user.rest;
+package com.userservice.user.rest;
 
-import com.devaware.user.User;
-import com.devaware.user.UserFilter;
-import com.devaware.user.UserRepository;
+import com.userservice.user.User;
+import com.userservice.user.UserFilter;
+import com.userservice.user.UserRepository;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

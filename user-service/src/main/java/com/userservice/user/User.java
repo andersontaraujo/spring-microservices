@@ -1,6 +1,6 @@
-package com.devaware.user;
+package com.userservice.user;
 
-import com.devaware.util.LocalDateTimeJsonDeserializer;
+import com.userservice.util.LocalDateTimeJsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
-package com.devaware.user.rest;
+package com.userservice.user.rest;
 
-import com.devaware.user.User;
-import com.devaware.util.LocalDateTimeConverter;
+import com.userservice.user.User;
+import com.userservice.util.LocalDateTimeConverter;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import org.springframework.stereotype.Component;

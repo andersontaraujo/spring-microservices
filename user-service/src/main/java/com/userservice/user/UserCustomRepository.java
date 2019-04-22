@@ -1,4 +1,4 @@
-package com.devaware.user;
+package com.userservice.user;
 
 import java.util.List;
 

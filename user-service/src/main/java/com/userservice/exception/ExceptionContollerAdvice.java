@@ -1,4 +1,4 @@
-package com.devaware.exception;
+package com.userservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;

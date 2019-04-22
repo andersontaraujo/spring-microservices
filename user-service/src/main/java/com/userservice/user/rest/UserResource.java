@@ -1,6 +1,6 @@
-package com.devaware.user.rest;
+package com.userservice.user.rest;
 
-import com.devaware.user.rest.validation.ResourceValid;
+import com.userservice.user.rest.validation.ResourceValid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

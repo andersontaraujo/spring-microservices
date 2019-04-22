@@ -1,4 +1,4 @@
-package com.devaware;
+package com.userservice;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
