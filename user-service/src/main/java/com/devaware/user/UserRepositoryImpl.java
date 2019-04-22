@@ -33,10 +33,6 @@ public class UserRepositoryImpl implements UserCustomRepository {
             predicates.add(builder.like(builder.upper(root.get(com.devaware.user.User_.USERNAME)), "%" + filter.getUsername().toUpperCase() +
                     "%"));
         }
-        if (filter.getEmail() != null) {
-            predicates.add(builder.like(builder.upper(root.get(com.devaware.user.User_.EMAIL)),
-                    "%" + filter.getEmail().toUpperCase() + "%"));
-        }
         criteria.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
         return em.createQuery(criteria).getResultList();
     }
