@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProfileVO {
+public class RoleVO {
 	private Long id;
 	private String name;
 }

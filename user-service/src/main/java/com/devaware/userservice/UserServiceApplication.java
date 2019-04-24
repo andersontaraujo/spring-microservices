@@ -32,7 +32,7 @@ public class UserServiceApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		userRepository.save(User.builder().name("Anderson Araújo").username("andersontaraujo").password("1234").profileId(1L).build());
+		userRepository.save(User.builder().name("Anderson Araújo").username("andersontaraujo").password("1234").roleId(1L).build());
 	}
 
 }

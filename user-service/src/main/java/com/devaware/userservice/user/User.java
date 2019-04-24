@@ -1,14 +1,6 @@
 package com.devaware.userservice.user;
 
-import com.devaware.userservice.util.LocalDateTimeJsonDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -43,18 +43,16 @@ public class User {
     @Column(name = "password")
     private String password;
     
-    @Column(name = "profile_id")
-    private Long profileId;
+    @Column(name = "role_id")
+    private Long roleId;
 
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
 
-    @JsonDeserialize(using = LocalDateTimeJsonDeserializer.class)
     @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @JsonDeserialize(using = LocalDateTimeJsonDeserializer.class)
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

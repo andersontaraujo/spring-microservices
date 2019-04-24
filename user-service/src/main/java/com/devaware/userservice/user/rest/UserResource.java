@@ -19,7 +19,7 @@ public class UserResource {
     private String name;
     private String username;
     private String password;
-    private ProfileVO profile;
+    private RoleVO role;
     private boolean isEnabled;
     private Date createdAt;
     private Date updatedAt;

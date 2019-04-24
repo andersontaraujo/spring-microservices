@@ -58,9 +58,9 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
         UserResource resource = mapper.map(user.get(), UserResource.class);
-        ResponseEntity<ProfileVO> response = rest.getForEntity("http://profile-service/profiles/" + user.get().getProfileId().toString(), ProfileVO.class);
+        ResponseEntity<RoleVO> response = rest.getForEntity("http://role-service/roles/" + user.get().getRoleId().toString(), RoleVO.class);
         if (response.getStatusCode().equals(HttpStatus.OK)) {
-        	resource.setProfile(response.getBody());
+        	resource.setRole(response.getBody());
         }
         return ResponseEntity.ok().body(resource);
     }
