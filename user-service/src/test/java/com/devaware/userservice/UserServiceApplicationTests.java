@@ -1,4 +1,4 @@
-package com.devaware;
+package com.devaware.userservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

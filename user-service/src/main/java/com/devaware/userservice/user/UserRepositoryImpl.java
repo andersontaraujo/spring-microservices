@@ -1,4 +1,4 @@
-package com.userservice.user;
+package com.devaware.userservice.user;
 
 import org.springframework.stereotype.Repository;
 
@@ -26,11 +26,11 @@ public class UserRepositoryImpl implements UserCustomRepository {
         Root<User> root = criteria.from(User.class);
         List<Predicate> predicates = new LinkedList<>();
         if (filter.getName() != null) {
-            predicates.add(builder.like(builder.upper(root.get(com.devaware.user.User_.NAME)), "%" + filter.getName().toUpperCase() +
+            predicates.add(builder.like(builder.upper(root.get(User_.NAME)), "%" + filter.getName().toUpperCase() +
                     "%"));
         }
         if (filter.getUsername() != null) {
-            predicates.add(builder.like(builder.upper(root.get(com.devaware.user.User_.USERNAME)), "%" + filter.getUsername().toUpperCase() +
+            predicates.add(builder.like(builder.upper(root.get(User_.USERNAME)), "%" + filter.getUsername().toUpperCase() +
                     "%"));
         }
         criteria.select(root).where(predicates.toArray(new Predicate[predicates.size()]));

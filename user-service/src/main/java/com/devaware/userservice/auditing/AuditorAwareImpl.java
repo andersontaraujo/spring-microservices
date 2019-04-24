@@ -1,4 +1,4 @@
-package com.userservice.auditing;
+package com.devaware.userservice.auditing;
 
 import org.springframework.data.domain.AuditorAware;
 

@@ -1,4 +1,4 @@
-package com.userservice.user.rest.validation;
+package com.devaware.userservice.user.rest.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

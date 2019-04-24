@@ -1,12 +1,13 @@
-package com.userservice.user.rest;
+package com.devaware.userservice.user.rest;
 
-import com.userservice.user.rest.validation.ResourceValid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+
+import com.devaware.userservice.user.rest.validation.ResourceValid;
 
 @Data
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package com.userservice.util;
+package com.devaware.userservice.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -1,4 +1,4 @@
-package com.userservice.exception;
+package com.devaware.userservice.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,9 @@
-package com.userservice.user.rest.validation;
+package com.devaware.userservice.user.rest.validation;
 
-import com.userservice.user.User;
-import com.userservice.user.UserRepository;
-import com.userservice.user.rest.UserResource;
+import com.devaware.userservice.user.User;
+import com.devaware.userservice.user.UserRepository;
+import com.devaware.userservice.user.rest.UserResource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

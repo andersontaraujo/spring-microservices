@@ -1,4 +1,4 @@
-package com.userservice.util;
+package com.devaware.userservice.util;
 
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;

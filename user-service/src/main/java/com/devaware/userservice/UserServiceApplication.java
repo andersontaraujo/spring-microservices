@@ -1,13 +1,14 @@
-package com.userservice;
+package com.devaware.userservice;
 
-import com.userservice.user.User;
-import com.userservice.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+import com.devaware.userservice.user.User;
+import com.devaware.userservice.user.UserRepository;
 
 @EnableDiscoveryClient
 @SpringBootApplication
