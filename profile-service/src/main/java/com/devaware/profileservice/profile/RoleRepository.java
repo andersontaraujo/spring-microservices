@@ -2,8 +2,8 @@ package com.devaware.profileservice.profile;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface ProfileRepository extends CrudRepository<Profile, Long> {
+public interface RoleRepository extends CrudRepository<Role, Long> {
 	
-	Profile findByName(String name);
+	Role findByName(String name);
 
 }

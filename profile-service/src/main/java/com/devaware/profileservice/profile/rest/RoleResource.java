@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @ResourceValid
-public class ProfileResource {
+public class RoleResource {
 	private Long id;
     private String name;
     private boolean isEnabled;

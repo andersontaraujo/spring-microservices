@@ -7,23 +7,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-import com.devaware.profileservice.profile.Profile;
-import com.devaware.profileservice.profile.ProfileRepository;
+import com.devaware.profileservice.profile.Role;
+import com.devaware.profileservice.profile.RoleRepository;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class ProfileServiceApplication implements ApplicationRunner {
+public class RoleServiceApplication implements ApplicationRunner {
 	
 	@Autowired
-	private ProfileRepository profileRepository;
+	private RoleRepository roleRepository;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProfileServiceApplication.class, args);
+		SpringApplication.run(RoleServiceApplication.class, args);
 	}
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		profileRepository.save(Profile.builder().name("Admin").build());
+		roleRepository.save(Role.builder().name("ROLE_ADMIN").build());
 	}
 
 }

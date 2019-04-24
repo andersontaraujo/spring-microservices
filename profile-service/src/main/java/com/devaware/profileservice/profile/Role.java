@@ -28,9 +28,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "profiles")
+@Table(name = "roles")
 @EntityListeners(AuditingEntityListener.class)
-public class Profile {
+public class Role {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

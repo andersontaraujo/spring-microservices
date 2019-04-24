@@ -5,23 +5,23 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.devaware.profileservice.profile.Profile;
-import com.devaware.profileservice.profile.ProfileRepository;
-import com.devaware.profileservice.profile.rest.ProfileResource;
+import com.devaware.profileservice.profile.Role;
+import com.devaware.profileservice.profile.RoleRepository;
+import com.devaware.profileservice.profile.rest.RoleResource;
 
-public class ProfileResourceValidator implements ConstraintValidator<ResourceValid, ProfileResource> {
+public class RoleResourceValidator implements ConstraintValidator<ResourceValid, RoleResource> {
 	
 	@Autowired
-	private ProfileRepository repository;
+	private RoleRepository repository;
 	
 	@Override
-    public boolean isValid(ProfileResource resource, ConstraintValidatorContext context) {
+    public boolean isValid(RoleResource resource, ConstraintValidatorContext context) {
         boolean valid = true;
         if (resource.getName() == null || resource.getName().isEmpty()) {
             context.buildConstraintViolationWithTemplate("O nome é obrigatório.").addConstraintViolation();
             valid = false;
         }
-        Profile profile = repository.findByName(resource.getName());
+        Role profile = repository.findByName(resource.getName());
         if (profile != null && (resource.getId() == null || !profile.getId().equals(resource.getId()))) {
             context.buildConstraintViolationWithTemplate("O nome informado já existe.").addConstraintViolation();
             valid = false;
