@@ -2,6 +2,7 @@ package com.devaware.userservice.user.rest;
 
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.devaware.userservice.user.User;
@@ -31,6 +33,9 @@ public class UserRestController {
 
     @Autowired
     private MapperFacade mapper;
+    
+    @Autowired
+    private RestTemplate client;
 
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource resource) {
@@ -43,7 +48,7 @@ public class UserRestController {
     public ResponseEntity<?> findAll(@RequestParam(required = false) String name, 
     		@RequestParam(required = false) String username) {
         List<User> users = repository.search(UserFilter.builder().name(name).username(username).build());
-        return ResponseEntity.ok().body(users);
+        return ResponseEntity.ok().body(mapper.mapAsList(users, UserResource.class));
     }
 
     @GetMapping("/{id}")
@@ -52,7 +57,12 @@ public class UserRestController {
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(mapper.map(user.get(), UserResource.class));
+        UserResource resource = mapper.map(user.get(), UserResource.class);
+        ResponseEntity<ProfileVO> response = client.getForEntity("http://profile-service/profiles/" + user.get().getProfileId().toString(), ProfileVO.class);
+        if (response.getStatusCode().equals(HttpStatus.OK)) {
+        	resource.setProfile(response.getBody());
+        }
+        return ResponseEntity.ok().body(resource);
     }
 
     @PutMapping("/{id}")
