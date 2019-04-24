@@ -1,8 +1,8 @@
-package com.devaware.profileservice.profile.rest;
+package com.devaware.roleservice.role.rest;
 
 import java.util.Date;
 
-import com.devaware.profileservice.profile.rest.validation.ResourceValid;
+import com.devaware.roleservice.role.rest.validation.ResourceValid;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

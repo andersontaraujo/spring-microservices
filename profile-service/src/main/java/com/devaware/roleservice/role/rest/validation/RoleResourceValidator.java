@@ -1,13 +1,13 @@
-package com.devaware.profileservice.profile.rest.validation;
+package com.devaware.roleservice.role.rest.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.devaware.profileservice.profile.Role;
-import com.devaware.profileservice.profile.RoleRepository;
-import com.devaware.profileservice.profile.rest.RoleResource;
+import com.devaware.roleservice.role.Role;
+import com.devaware.roleservice.role.RoleRepository;
+import com.devaware.roleservice.role.rest.RoleResource;
 
 public class RoleResourceValidator implements ConstraintValidator<ResourceValid, RoleResource> {
 	

@@ -1,4 +1,4 @@
-package com.devaware.profileservice.profile.rest;
+package com.devaware.roleservice.role.rest;
 
 import java.net.URI;
 import java.util.Optional;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devaware.profileservice.profile.Role;
-import com.devaware.profileservice.profile.RoleRepository;
+import com.devaware.roleservice.role.Role;
+import com.devaware.roleservice.role.RoleRepository;
 
 import ma.glasnost.orika.MapperFacade;
 

@@ -1,4 +1,4 @@
-package com.devaware.profileservice.util;
+package com.devaware.roleservice.util;
 
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;

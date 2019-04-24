@@ -1,4 +1,4 @@
-package com.devaware.profileservice.profile;
+package com.devaware.roleservice.role;
 
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,4 +1,4 @@
-package com.devaware.profileservice.profile;
+package com.devaware.roleservice.role;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.devaware.profileservice.util.LocalDateTimeJsonDeserializer;
+import com.devaware.roleservice.util.LocalDateTimeJsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.AllArgsConstructor;

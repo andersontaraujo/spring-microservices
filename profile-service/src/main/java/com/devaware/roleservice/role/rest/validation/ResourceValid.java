@@ -1,4 +1,4 @@
-package com.devaware.profileservice.profile.rest.validation;
+package com.devaware.roleservice.role.rest.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

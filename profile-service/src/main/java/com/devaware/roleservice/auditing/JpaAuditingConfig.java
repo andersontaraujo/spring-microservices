@@ -1,4 +1,4 @@
-package com.devaware.profileservice.auditing;
+package com.devaware.roleservice.auditing;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

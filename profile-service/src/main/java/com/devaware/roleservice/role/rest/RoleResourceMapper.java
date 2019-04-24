@@ -1,9 +1,9 @@
-package com.devaware.profileservice.profile.rest;
+package com.devaware.roleservice.role.rest;
 
 import org.springframework.stereotype.Component;
 
-import com.devaware.profileservice.profile.Role;
-import com.devaware.profileservice.util.LocalDateTimeConverter;
+import com.devaware.roleservice.role.Role;
+import com.devaware.roleservice.util.LocalDateTimeConverter;
 
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;

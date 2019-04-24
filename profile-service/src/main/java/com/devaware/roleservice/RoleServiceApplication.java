@@ -1,4 +1,4 @@
-package com.devaware.profileservice;
+package com.devaware.roleservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -7,8 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-import com.devaware.profileservice.profile.Role;
-import com.devaware.profileservice.profile.RoleRepository;
+import com.devaware.roleservice.role.Role;
+import com.devaware.roleservice.role.RoleRepository;
 
 @EnableDiscoveryClient
 @SpringBootApplication

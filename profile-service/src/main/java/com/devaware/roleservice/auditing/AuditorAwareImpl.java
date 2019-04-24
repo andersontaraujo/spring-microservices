@@ -1,4 +1,4 @@
-package com.devaware.profileservice.auditing;
+package com.devaware.roleservice.auditing;
 
 import org.springframework.data.domain.AuditorAware;
 

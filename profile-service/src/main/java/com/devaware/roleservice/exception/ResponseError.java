@@ -1,4 +1,4 @@
-package com.devaware.profileservice.exception;
+package com.devaware.roleservice.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
