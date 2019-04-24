@@ -35,7 +35,7 @@ public class UserRestController {
     private MapperFacade mapper;
     
     @Autowired
-    private RestTemplate client;
+    private RestTemplate rest;
 
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource resource) {
@@ -58,7 +58,7 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
         UserResource resource = mapper.map(user.get(), UserResource.class);
-        ResponseEntity<ProfileVO> response = client.getForEntity("http://profile-service/profiles/" + user.get().getProfileId().toString(), ProfileVO.class);
+        ResponseEntity<ProfileVO> response = rest.getForEntity("http://profile-service/profiles/" + user.get().getProfileId().toString(), ProfileVO.class);
         if (response.getStatusCode().equals(HttpStatus.OK)) {
         	resource.setProfile(response.getBody());
         }
