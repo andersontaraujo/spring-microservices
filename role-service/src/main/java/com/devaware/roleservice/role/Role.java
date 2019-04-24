@@ -15,9 +15,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.devaware.roleservice.util.LocalDateTimeJsonDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,12 +40,10 @@ public class Role {
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
     
-    @JsonDeserialize(using = LocalDateTimeJsonDeserializer.class)
     @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @JsonDeserialize(using = LocalDateTimeJsonDeserializer.class)
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
