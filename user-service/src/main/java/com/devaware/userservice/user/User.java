@@ -42,6 +42,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+    
+    @Column(name = "profile_id")
+    private Long profileId;
 
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
@@ -51,6 +54,7 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @JsonDeserialize(using = LocalDateTimeJsonDeserializer.class)
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

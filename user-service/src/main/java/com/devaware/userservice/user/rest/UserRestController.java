@@ -35,14 +35,13 @@ public class UserRestController {
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource resource) {
         User entity = repository.save(mapper.map(resource, User.class));
-        URI location =
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}").buildAndExpand(entity.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}").buildAndExpand(entity.getId()).toUri();
         return ResponseEntity.created(location).body(mapper.map(entity, UserResource.class));
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam(required=false) String name, @RequestParam(required=false) String username,
-                                     @RequestParam(required=false) String email) {
+    public ResponseEntity<?> findAll(@RequestParam(required = false) String name, 
+    		@RequestParam(required = false) String username) {
         List<User> users = repository.search(UserFilter.builder().name(name).username(username).build());
         return ResponseEntity.ok().body(users);
     }
