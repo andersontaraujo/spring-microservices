@@ -23,7 +23,9 @@ public class RoleServiceApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		roleRepository.save(Role.builder().name("ROLE_ADMIN").build());
+		roleRepository.save(Role.builder().name("ROLE_ADMIN").userId(1L).build());
+		roleRepository.save(Role.builder().name("ROLE_USER").userId(1L).build());
+		roleRepository.save(Role.builder().name("ROLE_ADMIN").userId(2L).build());
 	}
 
 }

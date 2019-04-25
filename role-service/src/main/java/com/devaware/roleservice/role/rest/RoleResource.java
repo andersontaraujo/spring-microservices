@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class RoleResource {
 	private Long id;
     private String name;
+    private Long userId;
     private boolean isEnabled;
     private Date createdAt;
     private Date updatedAt;

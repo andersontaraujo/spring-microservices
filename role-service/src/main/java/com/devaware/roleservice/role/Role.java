@@ -36,6 +36,9 @@ public class Role {
 
     @Column(name = "name")
     private String name;
+    
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;

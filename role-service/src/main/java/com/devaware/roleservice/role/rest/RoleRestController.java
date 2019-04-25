@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.devaware.roleservice.role.Role;
+import com.devaware.roleservice.role.RoleFilter;
 import com.devaware.roleservice.role.RoleRepository;
 
 import ma.glasnost.orika.MapperFacade;
@@ -39,8 +41,10 @@ public class RoleRestController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> findAll() {
-		Iterable<Role> roles = repository.findAll();		
+	public ResponseEntity<?> findAll(@RequestParam(required = false) String name,
+			@RequestParam(required = false) Long userId, 
+			@RequestParam(required = false) Boolean enabled) {
+		Iterable<Role> roles = repository.search(RoleFilter.builder().name(name).userId(userId).enabled(enabled).build());		
 		return ResponseEntity.ok().body(mapper.mapAsList(roles, RoleResource.class));
 	}
 	
