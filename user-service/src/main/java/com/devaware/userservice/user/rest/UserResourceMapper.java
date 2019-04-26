@@ -21,11 +21,11 @@ public class UserResourceMapper extends ConfigurableMapper {
                 .customize(new CustomMapper<User, UserResource>() {
                     @Override
                     public void mapBtoA(UserResource b, User a, MappingContext context) {
-                        a.setRoleId(b.getRole().getId());
+                    	//TODO: implementar lógica de mapping.
                     }
 					@Override
 					public void mapAtoB(User a, UserResource b, MappingContext context) {
-						b.setRole(RoleVO.builder().id(a.getRoleId()).build());
+						//TODO: implementar lógica de mapping.
 					}
                 })
                 .byDefault()

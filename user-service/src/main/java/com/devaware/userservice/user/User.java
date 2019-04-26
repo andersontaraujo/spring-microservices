@@ -42,15 +42,12 @@ public class User {
 
     @Column(name = "password")
     private String password;
-    
-    @Column(name = "role_id")
-    private Long roleId;
 
-    @Column(name = "is_enabled", nullable = false)
+    @Column(name = "is_enabled")
     private boolean isEnabled;
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @LastModifiedDate

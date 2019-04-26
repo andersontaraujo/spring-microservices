@@ -1,7 +1,14 @@
 package com.devaware.userservice.user.rest;
 
-import ma.glasnost.orika.MapperFacade;
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserFilter;
 import com.devaware.userservice.user.UserRepository;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
+import ma.glasnost.orika.MapperFacade;
 
 @RestController
 @RequestMapping("/users")
@@ -40,6 +45,7 @@ public class UserRestController {
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource resource) {
         User entity = repository.save(mapper.map(resource, User.class));
+        //TODO: implementar lógica de criação das roles chamando o endpoint do serviço
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}").buildAndExpand(entity.getId()).toUri();
         return ResponseEntity.created(location).body(mapper.map(entity, UserResource.class));
     }
@@ -58,9 +64,17 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
         UserResource resource = mapper.map(user.get(), UserResource.class);
-        ResponseEntity<RoleVO> response = rest.getForEntity("http://role-service/roles/" + user.get().getRoleId().toString(), RoleVO.class);
+        UriComponentsBuilder builder = UriComponentsBuilder
+        		.fromUriString("http://role-service/roles")
+        		.queryParam("userId", user.get().getId())
+        		.queryParam("enabled", true);
+        ResponseEntity<List<RoleVO>> response = rest.exchange(
+        		builder.toUriString(), 
+        		HttpMethod.GET, 
+        		null, 
+        		new ParameterizedTypeReference<List<RoleVO>>(){});
         if (response.getStatusCode().equals(HttpStatus.OK)) {
-        	resource.setRole(response.getBody());
+        	resource.setRoles(response.getBody());
         }
         return ResponseEntity.ok().body(resource);
     }
