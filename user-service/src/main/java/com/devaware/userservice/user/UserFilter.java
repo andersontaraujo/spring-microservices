@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserFilter {
-    String name;
-    String username;
+    private String name;
+    private String username;
+    private Boolean enabled;
 }

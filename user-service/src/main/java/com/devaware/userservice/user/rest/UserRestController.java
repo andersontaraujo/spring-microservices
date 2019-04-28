@@ -52,8 +52,8 @@ public class UserRestController {
 
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(required = false) String name, 
-    		@RequestParam(required = false) String username) {
-        List<User> users = repository.search(UserFilter.builder().name(name).username(username).build());
+    		@RequestParam(required = false) String username, @RequestParam(required = false) Boolean enabled) {
+        List<User> users = repository.search(UserFilter.builder().name(name).username(username).enabled(enabled).build());
         return ResponseEntity.ok().body(mapper.mapAsList(users, UserResource.class));
     }
 

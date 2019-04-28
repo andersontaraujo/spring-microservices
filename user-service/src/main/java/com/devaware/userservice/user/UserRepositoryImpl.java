@@ -26,12 +26,13 @@ public class UserRepositoryImpl implements UserCustomRepository {
         Root<User> root = criteria.from(User.class);
         List<Predicate> predicates = new LinkedList<>();
         if (filter.getName() != null) {
-            predicates.add(builder.like(builder.upper(root.get(User_.NAME)), "%" + filter.getName().toUpperCase() +
-                    "%"));
+            predicates.add(builder.like(builder.upper(root.get(User_.NAME)), "%" + filter.getName().toUpperCase() + "%"));
         }
         if (filter.getUsername() != null) {
-            predicates.add(builder.like(builder.upper(root.get(User_.USERNAME)), "%" + filter.getUsername().toUpperCase() +
-                    "%"));
+            predicates.add(builder.like(builder.upper(root.get(User_.USERNAME)), "%" + filter.getUsername().toUpperCase() + "%"));
+        }
+        if (filter.getEnabled() != null) {
+        	predicates.add(builder.equal(root.get(User_.IS_ENABLED), filter.getEnabled()));
         }
         criteria.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
         return em.createQuery(criteria).getResultList();
