@@ -1,3 +1,7 @@
+info:
+  app:
+    name: Role Service
+
 spring:
   application:
     name: role-service
