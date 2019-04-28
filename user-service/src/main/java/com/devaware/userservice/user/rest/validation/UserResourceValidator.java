@@ -38,6 +38,10 @@ public class UserResourceValidator implements ConstraintValidator<ResourceValid,
             context.buildConstraintViolationWithTemplate("A senha deve conter no mínimo 6 caracteres.").addConstraintViolation();
             valid = false;
         }
+        if (resource.getRoles() == null || resource.getRoles().isEmpty()) {
+        	context.buildConstraintViolationWithTemplate("Ao menos 1 perfil desse ser associado ao usuário.").addConstraintViolation();
+            valid = false;
+        }
         return valid;
     }
 }

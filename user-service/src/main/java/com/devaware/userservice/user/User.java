@@ -1,13 +1,17 @@
 package com.devaware.userservice.user;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -42,6 +46,10 @@ public class User {
 
     @Column(name = "password")
     private String password;
+    
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserRole> roles = new ArrayList<>();
 
     @Column(name = "is_enabled")
     private boolean isEnabled;
@@ -57,5 +65,15 @@ public class User {
     @PrePersist
     private void before() {
         isEnabled = true;
+    }
+    
+    public void addRole(UserRole role) {
+    	roles.add(role);
+    	role.setUser(this);
+    }
+    
+    public void removeRole(UserRole role) {
+    	role.setUser(null);
+    	roles.remove(role);
     }
 }
