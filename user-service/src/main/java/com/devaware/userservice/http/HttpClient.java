@@ -1,4 +1,4 @@
-package com.devaware.userservice.util;
+package com.devaware.userservice.http;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.rest.RoleVO;
 
 @Component
-public class HttpRequest {
+public class HttpClient {
 	
 	@Autowired
     private RestTemplate rest;

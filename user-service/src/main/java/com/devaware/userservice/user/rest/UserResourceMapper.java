@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.devaware.userservice.mapping.IMapperConfigurer;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserRepository;
 import com.devaware.userservice.user.UserRole;
-import com.devaware.userservice.util.IMapperConfigurer;
 
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;

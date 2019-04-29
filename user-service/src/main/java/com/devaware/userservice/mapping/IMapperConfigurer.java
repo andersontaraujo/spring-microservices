@@ -1,4 +1,4 @@
-package com.devaware.userservice.util;
+package com.devaware.userservice.mapping;
 
 import ma.glasnost.orika.MapperFactory;
 

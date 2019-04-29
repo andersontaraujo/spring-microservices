@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.devaware.userservice.http.HttpClient;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserRepository;
 import com.devaware.userservice.user.rest.RoleVO;
 import com.devaware.userservice.user.rest.UserResource;
-import com.devaware.userservice.util.HttpRequest;
 
 public class UserResourceValidator implements ConstraintValidator<ResourceValid, UserResource> {
 
@@ -21,7 +21,7 @@ public class UserResourceValidator implements ConstraintValidator<ResourceValid,
     private UserRepository repository;
     
     @Autowired
-    private HttpRequest request;
+    private HttpClient request;
 
     @Override
     public boolean isValid(UserResource resource, ConstraintValidatorContext context) {

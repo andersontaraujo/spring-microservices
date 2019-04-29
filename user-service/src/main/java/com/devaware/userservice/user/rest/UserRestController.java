@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.devaware.userservice.http.HttpClient;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserFilter;
 import com.devaware.userservice.user.UserRepository;
 import com.devaware.userservice.user.UserRole;
-import com.devaware.userservice.util.HttpRequest;
 
 import ma.glasnost.orika.MapperFacade;
 
@@ -39,7 +39,7 @@ public class UserRestController {
     private MapperFacade mapper;
     
     @Autowired
-    private HttpRequest request;
+    private HttpClient request;
 
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource user) {
