@@ -1,12 +1,14 @@
 package com.devaware.userservice.user.rest;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserFilter;
 import com.devaware.userservice.user.UserRepository;
+import com.devaware.userservice.user.UserRole;
+import com.devaware.userservice.util.HttpRequest;
 
 import ma.glasnost.orika.MapperFacade;
 
@@ -33,12 +37,17 @@ public class UserRestController {
 
     @Autowired
     private MapperFacade mapper;
+    
+    @Autowired
+    private HttpRequest request;
 
     @PostMapping
-    public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource resource) {
-        User entity = repository.save(mapper.map(resource, User.class));
+    public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource user) {
+        User entity = repository.save(mapper.map(user, User.class));
+        UserResource resource = mapper.map(entity, UserResource.class);
+        resource.setRoles(getDetailedRoles(entity));
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}").buildAndExpand(entity.getId()).toUri();
-        return ResponseEntity.created(location).body(mapper.map(entity, UserResource.class));
+        return ResponseEntity.created(location).body(resource);
     }
 
     @GetMapping
@@ -54,7 +63,9 @@ public class UserRestController {
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(mapper.map(user.get(), UserResource.class));
+        UserResource resource = mapper.map(user.get(), UserResource.class);
+        resource.setRoles(getDetailedRoles(user.get()));
+        return ResponseEntity.ok().body(resource);
     }
 
     @PutMapping("/{id}")
@@ -68,6 +79,17 @@ public class UserRestController {
         }
         User entity = repository.save(mapper.map(resource, User.class));
         return ResponseEntity.ok().body(mapper.map(entity, UserResource.class));
+    }
+    
+    private List<RoleVO> getDetailedRoles(User user) {
+    	ArrayList<RoleVO> roles = new ArrayList<>();    			
+    	for (UserRole role : user.getRoles()) {
+        	ResponseEntity<RoleVO> response = request.getRole(role.getRoleId());
+        	if (response.getStatusCode().equals(HttpStatus.OK)) {
+        		roles.add(response.getBody());
+        	}
+        }
+    	return roles;
     }
 
 }
