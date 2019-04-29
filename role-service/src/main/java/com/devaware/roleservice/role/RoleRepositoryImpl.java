@@ -29,9 +29,6 @@ public class RoleRepositoryImpl implements RoleCustomRepository {
 		if (filter.getName() != null) {
             predicates.add(builder.like(builder.upper(root.get(Role_.NAME)), "%" + filter.getName().toUpperCase() + "%"));
         }
-        if (filter.getUserId() != null) {
-            predicates.add(builder.equal(builder.upper(root.get(Role_.USER_ID)), filter.getUserId()));
-        }
         if (filter.getEnabled() != null) {
             predicates.add(builder.equal(builder.upper(root.get(Role_.IS_ENABLED)), filter.getEnabled()));
         }

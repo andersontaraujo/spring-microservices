@@ -44,7 +44,7 @@ public class RoleRestController {
 	public ResponseEntity<?> findAll(@RequestParam(required = false) String name,
 			@RequestParam(required = false) Long userId, 
 			@RequestParam(required = false) Boolean enabled) {
-		Iterable<Role> roles = repository.search(RoleFilter.builder().name(name).userId(userId).enabled(enabled).build());		
+		Iterable<Role> roles = repository.search(RoleFilter.builder().name(name).enabled(enabled).build());		
 		return ResponseEntity.ok().body(mapper.mapAsList(roles, RoleResource.class));
 	}
 	

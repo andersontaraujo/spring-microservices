@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RoleFilter {
 	private String name;
-	private Long userId;
 	private Boolean enabled;
 }
