@@ -42,8 +42,8 @@ public class UserRestController {
     private HttpClient request;
 
     @PostMapping
-    public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource user) {
-        User entity = repository.save(mapper.map(user, User.class));
+    public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource body) {
+        User entity = repository.save(mapper.map(body, User.class));
         UserResource resource = mapper.map(entity, UserResource.class);
         resource.setRoles(getDetailedRoles(entity));
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}").buildAndExpand(entity.getId()).toUri();
@@ -69,16 +69,18 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResource> update(@PathVariable Long id, @Valid @RequestBody UserResource resource) {
-        if (!id.equals(resource.getId())) {
+    public ResponseEntity<UserResource> update(@PathVariable Long id, @Valid @RequestBody UserResource body) {
+        if (!id.equals(body.getId())) {
             return ResponseEntity.badRequest().build();
         }
         Optional<User> user = repository.findById(id);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        User entity = repository.save(mapper.map(resource, User.class));
-        return ResponseEntity.ok().body(mapper.map(entity, UserResource.class));
+        User entity = repository.save(mapper.map(body, User.class));
+        UserResource resource = mapper.map(entity, UserResource.class);
+        resource.setRoles(getDetailedRoles(entity));
+        return ResponseEntity.ok().body(resource);
     }
     
     private List<RoleVO> getDetailedRoles(User user) {
