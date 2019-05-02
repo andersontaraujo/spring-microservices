@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.devaware.userservice.mapping.IMapperConfigurer;
@@ -20,9 +21,13 @@ public class UserResourceMapper extends CustomMapper<User, UserResource> impleme
 	
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private PasswordEncoder encoder;
 			
 	@Override
     public void mapBtoA(UserResource b, User a, MappingContext context) {
+		a.setPassword(encoder.encode(b.getPassword()));
 		a.getRoles().clear();
 		if (a.getId() != null) {
 			repository.save(a);			
