@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import feign.FeignException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @ControllerAdvice
@@ -30,5 +33,16 @@ public class ExceptionContollerAdvice {
                 .error(HttpStatus.PRECONDITION_FAILED.getReasonPhrase())
                 .path(request.getServletPath())
                 .messages(messages).build();
+    }
+    
+    @ExceptionHandler
+    @ResponseBody
+    public ResponseError handleClientError(FeignException ex, HttpServletRequest request){
+        return ResponseError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.resolve(ex.status()).value())
+                .error(HttpStatus.resolve(ex.status()).getReasonPhrase())
+                .path(request.getServletPath())
+                .messages(Arrays.asList(ex.getLocalizedMessage())).build();
     }
 }

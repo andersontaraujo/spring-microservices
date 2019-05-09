@@ -15,17 +15,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devaware.userservice.http.HttpClient;
+import com.devaware.userservice.http.RoleClient;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserFilter;
 import com.devaware.userservice.user.UserRepository;
 import com.devaware.userservice.user.UserRole;
 
+import feign.FeignException;
 import ma.glasnost.orika.MapperFacade;
 
 @RestController
@@ -39,7 +41,7 @@ public class UserRestController {
     private MapperFacade mapper;
     
     @Autowired
-    private HttpClient request;
+    private RoleClient roleClient;
 
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource body) {
@@ -58,7 +60,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResource> findById(@PathVariable Long id) {
+    public ResponseEntity<UserResource> findById(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         Optional<User> user = repository.findById(id);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -69,7 +71,8 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResource> update(@PathVariable Long id, @Valid @RequestBody UserResource body) {
+    public ResponseEntity<UserResource> update(@PathVariable Long id, 
+    		@Valid @RequestBody UserResource body) {
         if (!id.equals(body.getId())) {
             return ResponseEntity.badRequest().build();
         }
@@ -83,10 +86,10 @@ public class UserRestController {
         return ResponseEntity.ok().body(resource);
     }
     
-    private List<RoleVO> getDetailedRoles(User user) {
+    private List<RoleVO> getDetailedRoles(User user) throws FeignException {
     	ArrayList<RoleVO> roles = new ArrayList<>();    			
     	for (UserRole role : user.getRoles()) {
-        	ResponseEntity<RoleVO> response = request.getRole(role.getRoleId());
+        	ResponseEntity<RoleVO> response = roleClient.getRole(role.getRoleId());
         	if (response.getStatusCode().equals(HttpStatus.OK)) {
         		roles.add(response.getBody());
         	}
