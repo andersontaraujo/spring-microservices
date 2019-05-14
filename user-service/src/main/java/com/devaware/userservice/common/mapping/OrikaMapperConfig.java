@@ -1,4 +1,4 @@
-package com.devaware.userservice.mapping;
+package com.devaware.userservice.common.mapping;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import com.devaware.userservice.util.LocalDateTimeConverter;
+import com.devaware.userservice.common.util.LocalDateTimeConverter;
 
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;

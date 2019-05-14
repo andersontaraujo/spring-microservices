@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
-import com.devaware.userservice.user.rest.validation.ResourceValid;
+import com.devaware.userservice.common.ResourceValid;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +20,7 @@ public class UserResource {
     private String name;
     private String username;
     private String password;
-    private List<RoleVO> roles;
+    private List<Long> roles;
     private boolean isEnabled;
     private Date createdAt;
     private Date updatedAt;

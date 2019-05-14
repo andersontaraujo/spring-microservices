@@ -1,13 +1,13 @@
-package com.devaware.userservice.user.rest.validation;
+package com.devaware.userservice.user.rest;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.devaware.userservice.common.ResourceValid;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserRepository;
-import com.devaware.userservice.user.rest.UserResource;
 
 public class UserResourceValidator implements ConstraintValidator<ResourceValid, UserResource> {
 

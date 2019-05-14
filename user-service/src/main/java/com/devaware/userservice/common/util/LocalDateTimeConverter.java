@@ -1,4 +1,4 @@
-package com.devaware.userservice.util;
+package com.devaware.userservice.common.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

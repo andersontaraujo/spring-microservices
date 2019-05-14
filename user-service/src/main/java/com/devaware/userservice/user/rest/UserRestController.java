@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +26,6 @@ import com.devaware.userservice.user.UserFilter;
 import com.devaware.userservice.user.UserRepository;
 import com.devaware.userservice.user.UserRole;
 
-import feign.FeignException;
 import ma.glasnost.orika.MapperFacade;
 
 @RestController
@@ -46,10 +44,8 @@ public class UserRestController {
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource body) {
         User entity = repository.save(mapper.map(body, User.class));
-        UserResource resource = mapper.map(entity, UserResource.class);
-        resource.setRoles(getDetailedRoles(entity));
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}").buildAndExpand(entity.getId()).toUri();
-        return ResponseEntity.created(location).body(resource);
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{userId}").buildAndExpand(entity.getId()).toUri();
+        return ResponseEntity.created(location).body(mapper.map(entity, UserResource.class));
     }
 
     @GetMapping
@@ -59,42 +55,61 @@ public class UserRestController {
         return ResponseEntity.ok().body(mapper.mapAsList(users, UserResource.class));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResource> findById(@RequestHeader("Authorization") String token, @PathVariable Long id) {
-        Optional<User> user = repository.findById(id);
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResource> findById(@PathVariable Long userId) {
+        Optional<User> user = repository.findById(userId);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        UserResource resource = mapper.map(user.get(), UserResource.class);
-        resource.setRoles(getDetailedRoles(user.get()));
-        return ResponseEntity.ok().body(resource);
+        return ResponseEntity.ok().body(mapper.map(user.get(), UserResource.class));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResource> update(@PathVariable Long id, 
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResource> update(@PathVariable Long userId, 
     		@Valid @RequestBody UserResource body) {
-        if (!id.equals(body.getId())) {
+        if (!userId.equals(body.getId())) {
             return ResponseEntity.badRequest().build();
         }
-        Optional<User> user = repository.findById(id);
+        Optional<User> user = repository.findById(userId);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         User entity = repository.save(mapper.map(body, User.class));
-        UserResource resource = mapper.map(entity, UserResource.class);
-        resource.setRoles(getDetailedRoles(entity));
-        return ResponseEntity.ok().body(resource);
+        return ResponseEntity.ok().body(mapper.map(entity, UserResource.class));
     }
     
-    private List<RoleVO> getDetailedRoles(User user) throws FeignException {
+    @GetMapping("/{userId}/roles")
+    public ResponseEntity<?> findRolesByUserId(@PathVariable Long userId) {
+        Optional<User> user = repository.findById(userId);
+        if (!user.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(getRolesDetails(user.get()));
+    }
+    
+    @GetMapping("/{userId}/roles/{roleId}")
+    public ResponseEntity<RoleVO> findRoleByUserId(@PathVariable Long userId, @PathVariable Long roleId) {
+        Optional<User> user = repository.findById(userId);
+        if (!user.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(getRoleDetails(roleId));
+    }
+    
+    private List<RoleVO> getRolesDetails(User user) {
     	ArrayList<RoleVO> roles = new ArrayList<>();    			
-    	for (UserRole role : user.getRoles()) {
-        	ResponseEntity<RoleVO> response = roleClient.getRole(role.getRoleId());
-        	if (response.getStatusCode().equals(HttpStatus.OK)) {
-        		roles.add(response.getBody());
-        	}
+    	for (UserRole role : user.getUserRoles()) {
+    		roles.add(getRoleDetails(role.getRoleId()));
         }
     	return roles;
+    }
+    
+    private RoleVO getRoleDetails(Long roleId) {
+    	ResponseEntity<RoleVO> response = roleClient.getRole(roleId);
+    	if (response.getStatusCode().equals(HttpStatus.OK)) {
+    		return response.getBody();
+    	}
+    	return null;
     }
 
 }

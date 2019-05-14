@@ -49,7 +49,7 @@ public class User {
     
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRole> roles = new ArrayList<>();
+    private List<UserRole> userRoles = new ArrayList<>();
 
     @Column(name = "is_enabled")
     private boolean isEnabled;
@@ -68,12 +68,12 @@ public class User {
     }
     
     public void addRole(UserRole role) {
-    	roles.add(role);
+    	userRoles.add(role);
     	role.setUser(this);
     }
     
     public void removeRole(UserRole role) {
     	role.setUser(null);
-    	roles.remove(role);
+    	userRoles.remove(role);
     }
 }
