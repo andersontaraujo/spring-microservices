@@ -1,7 +1,6 @@
 package com.devaware.userservice.common.exception;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import feign.FeignException;
 
 @ControllerAdvice
 public class ExceptionContollerAdvice {
@@ -35,15 +32,4 @@ public class ExceptionContollerAdvice {
                 .messages(messages).build();
     }
     
-    @ExceptionHandler
-    @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseError handleClientError(FeignException ex, HttpServletRequest request){
-        return ResponseError.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-                .path(request.getServletPath())
-                .messages(Arrays.asList(ex.getMessage())).build();
-    }
 }
