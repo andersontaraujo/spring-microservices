@@ -1,32 +1,32 @@
 package com.devaware.userservice.common.exception;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import feign.FeignException;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @ControllerAdvice
 public class ExceptionContollerAdvice {
 
     @ExceptionHandler
     @ResponseBody
+    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
     public ResponseError handlePreconditions(MethodArgumentNotValidException ex, HttpServletRequest request){
-        List<String> messages = new ArrayList<>();
-        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
-            if (!error.getDefaultMessage().equals("")) {
-                messages.add(error.getDefaultMessage());
-            }
-        }
+    	List<String> messages = ex.getBindingResult().getAllErrors().stream()
+    			.map(x -> x.getDefaultMessage())
+    			.filter(y -> !"".equals(y))
+    			.collect(Collectors.toList());
         return ResponseError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.PRECONDITION_FAILED.value())
@@ -37,12 +37,13 @@ public class ExceptionContollerAdvice {
     
     @ExceptionHandler
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseError handleClientError(FeignException ex, HttpServletRequest request){
         return ResponseError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.resolve(ex.status()).value())
-                .error(HttpStatus.resolve(ex.status()).getReasonPhrase())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .path(request.getServletPath())
-                .messages(Arrays.asList(ex.getLocalizedMessage())).build();
+                .messages(Arrays.asList(ex.getMessage())).build();
     }
 }

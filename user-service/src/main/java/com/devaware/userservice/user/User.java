@@ -67,13 +67,13 @@ public class User {
         isEnabled = true;
     }
     
-    public void addRole(UserRole role) {
-    	userRoles.add(role);
-    	role.setUser(this);
+    public void addRole(UserRole userRole) {
+    	userRoles.add(userRole);
+    	userRole.setUser(this);
     }
     
-    public void removeRole(UserRole role) {
-    	role.setUser(null);
-    	userRoles.remove(role);
+    public void removeRole(UserRole userRole) {
+    	userRole.setUser(null);
+    	userRoles.remove(userRole);
     }
 }
