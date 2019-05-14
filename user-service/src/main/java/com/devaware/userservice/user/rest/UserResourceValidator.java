@@ -39,7 +39,7 @@ public class UserResourceValidator implements ConstraintValidator<ResourceValid,
             valid = false;
         }
         if (resource.getRoles() == null || resource.getRoles().isEmpty()) {
-        	context.buildConstraintViolationWithTemplate("Ao menos 1 papel desse ser associado ao usuário.").addConstraintViolation();
+        	context.buildConstraintViolationWithTemplate("Ao menos um papel desse ser associado ao usuário.").addConstraintViolation();
             valid = false;
         }        
         return valid;

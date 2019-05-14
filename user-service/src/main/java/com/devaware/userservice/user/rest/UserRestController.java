@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devaware.userservice.http.RoleClient;
+import com.devaware.userservice.role.Role;
+import com.devaware.userservice.role.RoleRepository;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserFilter;
 import com.devaware.userservice.user.UserRepository;
@@ -33,17 +33,17 @@ import ma.glasnost.orika.MapperFacade;
 public class UserRestController {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
+    
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private MapperFacade mapper;
-    
-    @Autowired
-    private RoleClient roleClient;
 
     @PostMapping
     public ResponseEntity<UserResource> create(@Valid @RequestBody UserResource body) {
-        User entity = repository.save(mapper.map(body, User.class));
+        User entity = userRepository.save(mapper.map(body, User.class));
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{userId}").buildAndExpand(entity.getId()).toUri();
         return ResponseEntity.created(location).body(mapper.map(entity, UserResource.class));
     }
@@ -51,13 +51,13 @@ public class UserRestController {
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(required = false) String name, 
     		@RequestParam(required = false) String username, @RequestParam(required = false) Boolean enabled) {
-        List<User> users = repository.search(UserFilter.builder().name(name).username(username).enabled(enabled).build());
+        List<User> users = userRepository.search(UserFilter.builder().name(name).username(username).enabled(enabled).build());
         return ResponseEntity.ok().body(mapper.mapAsList(users, UserResource.class));
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResource> findById(@PathVariable Long userId) {
-        Optional<User> user = repository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -70,17 +70,17 @@ public class UserRestController {
         if (!userId.equals(body.getId())) {
             return ResponseEntity.badRequest().build();
         }
-        Optional<User> user = repository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        User entity = repository.save(mapper.map(body, User.class));
+        User entity = userRepository.save(mapper.map(body, User.class));
         return ResponseEntity.ok().body(mapper.map(entity, UserResource.class));
     }
     
     @GetMapping("/{userId}/roles")
     public ResponseEntity<?> findRolesByUserId(@PathVariable Long userId) {
-        Optional<User> user = repository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -89,7 +89,7 @@ public class UserRestController {
     
     @GetMapping("/{userId}/roles/{roleId}")
     public ResponseEntity<RoleVO> findRoleByUserId(@PathVariable Long userId, @PathVariable Long roleId) {
-        Optional<User> user = repository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -98,18 +98,15 @@ public class UserRestController {
     
     private List<RoleVO> getRolesDetails(User user) {
     	ArrayList<RoleVO> roles = new ArrayList<>();    			
-    	for (UserRole role : user.getUserRoles()) {
-    		roles.add(getRoleDetails(role.getRoleId()));
+    	for (UserRole userRole : user.getUserRoles()) {
+    		roles.add(getRoleDetails(userRole.getRole().getId()));
         }
     	return roles;
     }
     
     private RoleVO getRoleDetails(Long roleId) {
-    	ResponseEntity<RoleVO> response = roleClient.getRole(roleId);
-    	if (response.getStatusCode().equals(HttpStatus.OK)) {
-    		return response.getBody();
-    	}
-    	return null;
+    	Optional<Role> role = roleRepository.findById(roleId);
+    	return RoleVO.builder().id(role.get().getId()).name(role.get().getVoterName()).build();
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.devaware.userservice.common.mapping.IMapperConfigurer;
+import com.devaware.userservice.role.RoleRepository;
 import com.devaware.userservice.user.User;
 import com.devaware.userservice.user.UserRepository;
 import com.devaware.userservice.user.UserRole;
@@ -20,7 +21,10 @@ import ma.glasnost.orika.MappingContext;
 public class UserResourceMapper extends CustomMapper<User, UserResource> implements IMapperConfigurer {	
 	
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
+	
+	@Autowired
+    private RoleRepository roleRepository;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -30,10 +34,10 @@ public class UserResourceMapper extends CustomMapper<User, UserResource> impleme
 		a.setPassword(encoder.encode(b.getPassword()));
 		a.getUserRoles().clear();
 		if (a.getId() != null) {
-			repository.save(a);			
+			userRepository.save(a);			
 		}
     	for (Long role : b.getRoles()) {
-    		a.addRole(UserRole.builder().roleId(role).build());
+    		a.addRole(UserRole.builder().role(roleRepository.findById(role).get()).build());
     	}
     }
 	@Override
@@ -41,7 +45,7 @@ public class UserResourceMapper extends CustomMapper<User, UserResource> impleme
 		b.setPassword(null);
 		List<Long> roles = new ArrayList<>();
 		for (UserRole role : a.getUserRoles()) {			
-			roles.add(role.getRoleId());
+			roles.add(role.getRole().getId());
 		}
 		b.setRoles(roles);
 	}

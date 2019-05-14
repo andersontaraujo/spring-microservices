@@ -3,6 +3,7 @@ package com.devaware.userservice.common;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+import com.devaware.userservice.role.rest.RoleResourceValidator;
 import com.devaware.userservice.user.rest.UserResourceValidator;
 
 import java.lang.annotation.Documented;
@@ -11,7 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = UserResourceValidator.class)
+@Constraint(validatedBy = {UserResourceValidator.class, RoleResourceValidator.class})
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
