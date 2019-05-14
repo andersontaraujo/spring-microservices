@@ -8,37 +8,31 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.devaware.userservice.common.entity.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+	private static final long serialVersionUID = 1L;
 
-    @Column(name = "name")
+	@Column(name = "name")
     private String name;
 
     @Column(name = "username")
@@ -47,24 +41,17 @@ public class User {
     @Column(name = "password")
     private String password;
     
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRole> userRoles = new ArrayList<>();
-
-    @Column(name = "is_enabled")
-    private boolean isEnabled;
-
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    private void before() {
-        isEnabled = true;
+    
+    @Builder
+    public User(Long id, boolean isEnabled, LocalDateTime createdAt, LocalDateTime updatedAt,
+    		String name, String username, String password, List<UserRole> userRoles) {
+    	super(id, isEnabled, createdAt, updatedAt);
+    	this.name = name;
+    	this.username = username;
+    	this.password = password;
+    	this.userRoles.addAll(userRoles);
     }
     
     public void addRole(UserRole userRole) {
