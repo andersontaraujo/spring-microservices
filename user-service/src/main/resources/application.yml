@@ -3,8 +3,8 @@ info:
     name: User Service
 
 spring:
-  application:
-    name: user-service
+  profiles:
+    active: dev
   datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:resource_account_db;DB_CLOSE_DELAY=-1

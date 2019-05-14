@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("andersontaraujo").password(passwordEncoder().encode("123456")).roles("USER");
+		auth.inMemoryAuthentication().withUser("andersontaraujo").password(passwordEncoder().encode("123456")).roles("ADMIN");
 	}
 
 	@Override
@@ -30,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable()
 			.authorizeRequests()
-				.antMatchers("/users/**").hasRole("USER")
+				.antMatchers("/users/**").hasRole("ADMIN")
+				.antMatchers("/roles/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				.and()
 		        .httpBasic();
