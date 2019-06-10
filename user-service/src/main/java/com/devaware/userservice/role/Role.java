@@ -31,15 +31,11 @@ public class Role extends BaseEntity {
     @Column(name = "name")
     private String name;
     
-    @Column(name = "voter_name")
-    private String voterName;
-    
     @Builder
     public Role(Long id, boolean isEnabled, LocalDateTime createdAt, LocalDateTime updatedAt,
     		String name, String voterName) {
     	super(id, isEnabled, createdAt, updatedAt);
     	this.name = name;
-    	this.voterName = voterName;
     }
 
 }

@@ -40,6 +40,7 @@ public class UserResourceMapper extends CustomMapper<User, UserResource> impleme
     		a.addRole(UserRole.builder().role(roleRepository.findById(role).get()).build());
     	}
     }
+	
 	@Override
 	public void mapAtoB(User a, UserResource b, MappingContext context) {
 		b.setPassword(null);

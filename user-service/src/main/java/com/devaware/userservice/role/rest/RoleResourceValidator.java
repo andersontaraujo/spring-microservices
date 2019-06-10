@@ -27,16 +27,6 @@ public class RoleResourceValidator implements ConstraintValidator<ResourceValid,
         		valid = false;
         	}
         }
-        if (resource.getVoterName() == null || resource.getVoterName().isEmpty()) {
-            context.buildConstraintViolationWithTemplate("O nome técnico é obrigatório.").addConstraintViolation();
-            valid = false;
-        } else {        	
-        	Role profile = repository.findByVoterName(resource.getVoterName());
-        	if (profile != null && (resource.getId() == null || !profile.getId().equals(resource.getId()))) {
-        		context.buildConstraintViolationWithTemplate("O nome técnico informado já existe.").addConstraintViolation();
-        		valid = false;
-        	}
-        }
         return valid;
     }
 

@@ -1,7 +1,6 @@
 package com.devaware.userservice.role.rest;
 
 import java.net.URI;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -28,45 +27,44 @@ import ma.glasnost.orika.MapperFacade;
 public class RoleRestController {
 	
 	@Autowired
-	private RoleRepository roleRepository;
+	private RoleRepository repository;
 	
 	@Autowired
 	private MapperFacade mapper;
 	
 	@PostMapping
 	public ResponseEntity<RoleResource> create(@Valid @RequestBody RoleResource resource) {
-		Role role = roleRepository.save(mapper.map(resource, Role.class));
-		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/roles/{id}").buildAndExpand(role.getId()).toUri();
+		Role role = repository.save(mapper.map(resource, Role.class));
+		URI location = ServletUriComponentsBuilder.fromCurrentRequestUri()
+				.path("/{id}").buildAndExpand(role.getId()).toUri();
 		return ResponseEntity.created(location).body(mapper.map(role, RoleResource.class));
 	}
 	
 	@GetMapping
 	public ResponseEntity<?> findAll(@RequestParam(required = false) String name,
 			@RequestParam(required = false) Boolean enabled) {
-		Iterable<Role> roles = roleRepository.search(RoleFilter.builder().name(name).enabled(enabled).build());		
+		Iterable<Role> roles = repository.search(new RoleFilter(name, enabled));		
 		return ResponseEntity.ok().body(mapper.mapAsList(roles, RoleResource.class));
 	}
 	
-	@GetMapping("/{roleId}")
-	public ResponseEntity<RoleResource> findById(@PathVariable Long roleId) {
-		Optional<Role> role = roleRepository.findById(roleId);
-		if (!role.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok().body(mapper.map(role.get(), RoleResource.class));
+	@GetMapping("/{id}")
+	public ResponseEntity<RoleResource> findById(@PathVariable Long id) {
+		return repository.findById(id)
+				.map(role -> ResponseEntity.ok().body(mapper.map(role, RoleResource.class)))
+				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@PutMapping("/{roleId}")
-    public ResponseEntity<RoleResource> update(@PathVariable Long roleId, @Valid @RequestBody RoleResource resource) {
-        if (!roleId.equals(resource.getId())) {
+	@PutMapping("/{id}")
+    public ResponseEntity<RoleResource> update(@PathVariable Long id, @Valid @RequestBody RoleResource resource) {
+        if (!id.equals(resource.getId())) {
             return ResponseEntity.badRequest().build();
         }
-        Optional<Role> role = roleRepository.findById(roleId);
-        if (!role.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        Role entity = roleRepository.save(mapper.map(resource, Role.class));
-        return ResponseEntity.ok().body(mapper.map(entity, RoleResource.class));
+        return repository.findById(id)
+				.map(role -> {
+					Role entity = repository.save(mapper.map(resource, Role.class));
+					return ResponseEntity.ok().body(mapper.map(entity, RoleResource.class));
+				})
+				.orElse(ResponseEntity.notFound().build());
     }
 
 }
